@@ -8,9 +8,7 @@ import java.util.Stack;
 import java.util.stream.StreamSupport;
 
 public class TestCal extends JFrame{
-
-    private double total1 = 0.0;
-    private double total2 = 0.0;
+    
     private ArrayList<String> expre = new ArrayList<String>();
 
     private JLabel txtEqu;
@@ -35,7 +33,7 @@ public class TestCal extends JFrame{
     private JLabel labExp;
     private JLabel labRes;
     private JLabel labInput;
-    private JLabel txtInput;
+    private JLabel txtInput; // number and wrong message
     private JLabel txtAnswer;
     private JButton btnDiv;
     private JButton btnExpo;
@@ -55,18 +53,16 @@ public class TestCal extends JFrame{
         btn0.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(0));
                 String equ = txtEqu.getText() + btn0.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn0.getText();
-                txtInput.setText(input);
+                txtInput.setText(input); // add to txtInput
             }
         });
 
         btn1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(1));
                 String equ = txtEqu.getText() + btn1.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn1.getText();
@@ -77,7 +73,6 @@ public class TestCal extends JFrame{
         btn2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(2));
                 String equ = txtEqu.getText() + btn2.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn2.getText();
@@ -88,7 +83,6 @@ public class TestCal extends JFrame{
         btn3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(3));
                 String equ = txtEqu.getText() + btn3.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn3.getText();
@@ -99,7 +93,6 @@ public class TestCal extends JFrame{
         btn4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(4));
                 String equ = txtEqu.getText() + btn4.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn4.getText();
@@ -110,7 +103,6 @@ public class TestCal extends JFrame{
         btn5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(5));
                 String equ = txtEqu.getText() + btn5.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn5.getText();
@@ -121,7 +113,6 @@ public class TestCal extends JFrame{
         btn6.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(6));
                 String equ = txtEqu.getText() + btn6.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn6.getText();
@@ -132,7 +123,6 @@ public class TestCal extends JFrame{
         btn7.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(7));
                 String equ = txtEqu.getText() + btn7.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn7.getText();
@@ -143,7 +133,6 @@ public class TestCal extends JFrame{
         btn8.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //expre.add(String.valueOf(8));
                 String equ = txtEqu.getText() + btn8.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn8.getText();
@@ -154,14 +143,10 @@ public class TestCal extends JFrame{
         btn9.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //show the number
-                //expre.add(String.valueOf(9));
                 String equ = txtEqu.getText() + btn9.getText() + " ";
                 txtEqu.setText(equ);
                 String input =  txtInput.getText() + btn9.getText();
                 txtInput.setText(input);
-
-                //lock the button
             }
         });
 
@@ -172,6 +157,7 @@ public class TestCal extends JFrame{
                     expre.add(txtInput.getText());
                 }
 
+                // if it is start of expression or open par, add 0 before
                 if (expre.isEmpty() || expre.get(expre.size() - 1).equals("( ") || expre.get(expre.size() - 1).equals("{ ")) {
 
                     expre.add("0 ");
@@ -179,11 +165,23 @@ public class TestCal extends JFrame{
                     String tem = txtEqu.getText() + "0 + ";
                     txtEqu.setText(tem);
 
-                }else if (expre.get(expre.size() - 1).equals("+ ") || expre.get(expre.size() - 1).equals("- ")) {
+                }
+                else if (expre.get(expre.size() - 1).equals("/ ") || expre.get(expre.size() - 1).equals("* ")) {
 
                     expre.add("( ");
                     expre.add("0 ");
-                    expre.add("- ");
+                    expre.add("+ ");
+                    String tem = txtEqu.getText() + "( 0 + ";
+                    txtEqu.setText(tem);
+
+
+                }
+                // if there is a + or -; do ( 0 + 1 ) * (
+                else if (expre.get(expre.size() - 1).equals("+ ") || expre.get(expre.size() - 1).equals("- ")) {
+
+                    expre.add("( ");
+                    expre.add("0 ");
+                    expre.add("+ ");
                     expre.add("1 ");
                     expre.add(") ");
                     expre.add("* ");
@@ -192,7 +190,7 @@ public class TestCal extends JFrame{
                     String temp = txtEqu.getText() + "( 0 + 1 ) * ( ";
                     txtEqu.setText(temp);
 
-                } else {
+                } else { // otherwise, do binary +
                     expre.add(("+ "));
 
                     //clear the number input
@@ -211,14 +209,25 @@ public class TestCal extends JFrame{
                     expre.add(txtInput.getText());
                 }
 
+                // if it is start of expression or open par, add 0 before
                 if (expre.isEmpty() || expre.get(expre.size() - 1).equals("( ") || expre.get(expre.size() - 1).equals("{ ")) {
-
                     expre.add("0 ");
                     expre.add("- ");
                     String tem = txtEqu.getText() + "0 - ";
                     txtEqu.setText(tem);
 
-                }else if (expre.get(expre.size() - 1).equals("+ ") || expre.get(expre.size() - 1).equals("- ")) {
+                }
+                else if (expre.get(expre.size() - 1).equals("/ ") || expre.get(expre.size() - 1).equals("* ")) {
+
+                    expre.add("( ");
+                    expre.add("0 ");
+                    expre.add("- ");
+                    String tem = txtEqu.getText() + "( 0 - ";
+                    txtEqu.setText(tem);
+
+
+                }// if there is a + or -; do ( 0 - 1 ) * (
+                else if (expre.get(expre.size() - 1).equals("+ ") || expre.get(expre.size() - 1).equals("- ")) {
 
                     expre.add("( ");
                     expre.add("0 ");
@@ -231,7 +240,7 @@ public class TestCal extends JFrame{
                     String temp = txtEqu.getText() + "( 0 - 1 ) * ( ";
                     txtEqu.setText(temp);
 
-                } else {
+                } else { // otherwise, do binary -
                     expre.add(("- "));
 
                     //clear the number input
@@ -256,6 +265,7 @@ public class TestCal extends JFrame{
         btnEqu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // lock all buttons except clear and exit
                 btnEqu.setEnabled(false);
                 btnEqu.setEnabled(false);
                 btnTimes.setEnabled(false);
@@ -288,86 +298,28 @@ public class TestCal extends JFrame{
                 expre.add(txtInput.getText());
 
                 txtInput.setText("");
-                //String btnEq_txt = btnEqu.getText();
                 String txt = txtEqu.getText();
 
                 String expres = "";
                 for (int i = 0; i < expre.size(); i++) {
                     expres = expres + expre.get(i) + " ";
                 }
-                //expre.add(String.valueOf("= "));
+
                 String postfix = infixToPostfix(expres, txtInput);
                 if (postfix.equals("N/A")) {
                     txtInput.setText("Try again, your mathematical expression is incorrect! ");
-                    btnEqu.setEnabled(false);
-                    btnTimes.setEnabled(false);
-                    btnMinus.setEnabled(false);
-                    btnPlus.setEnabled(false);
-                    btnDiv.setEnabled(false);
-                    btnDot.setEnabled(false);
-                    btnRiPar.setEnabled(false);
-                    btnLeftPar.setEnabled(false);
-                    btn0.setEnabled(false);
-                    btn1.setEnabled(false);
-                    btn2.setEnabled(false);
-                    btn3.setEnabled(false);
-                    btn4.setEnabled(false);
-                    btn5.setEnabled(false);
-                    btn6.setEnabled(false);
-                    btn7.setEnabled(false);
-                    btn8.setEnabled(false);
-                    btn9.setEnabled(false);
-                    btnExpo.setEnabled(false);
-                    btnLeCu.setEnabled(false);
-                    btnRiCu.setEnabled(false);
-                    btnLn.setEnabled(false);
-                    btnCos.setEnabled(false);
-                    btnSin.setEnabled(false);
-                    btnLog.setEnabled(false);
-                    btnCot.setEnabled(false);
-                    btnTan.setEnabled(false);
                 } else {
                     String ans = evalRPN(postfix);
                     if (ans.equals("N/A")) {
                         txtInput.setText("Try again! Your mathematical expression is incorrect! ");
-                        btnEqu.setEnabled(false);
-                        btnTimes.setEnabled(false);
-                        btnMinus.setEnabled(false);
-                        btnPlus.setEnabled(false);
-                        btnDiv.setEnabled(false);
-                        btnDot.setEnabled(false);
-                        btnRiPar.setEnabled(false);
-                        btnLeftPar.setEnabled(false);
-                        btn0.setEnabled(false);
-                        btn1.setEnabled(false);
-                        btn2.setEnabled(false);
-                        btn3.setEnabled(false);
-                        btn4.setEnabled(false);
-                        btn5.setEnabled(false);
-                        btn6.setEnabled(false);
-                        btn7.setEnabled(false);
-                        btn8.setEnabled(false);
-                        btn9.setEnabled(false);
-                        btnExpo.setEnabled(false);
-                        btnLeCu.setEnabled(false);
-                        btnRiCu.setEnabled(false);
-                        btnLn.setEnabled(false);
-                        btnCos.setEnabled(false);
-                        btnSin.setEnabled(false);
-                        btnLog.setEnabled(false);
-                        btnCot.setEnabled(false);
-                        btnTan.setEnabled(false);
                     } else {
                         txtAnswer.setText((ans));
-                        //txtInput.setText(Arrays.toString(expre.toArray()));
                     }
                 }
 
                 String equ = txt + btnEqu.getText();
                 txtEqu.setText(equ);
                 txtRes.setText(expres);
-
-                //double answer = cal(expre);
 
             }
         });
@@ -576,11 +528,11 @@ public class TestCal extends JFrame{
         });
     }
 
+    // Part of code from 'https://rosettacode.org/wiki/Parsing/Shunting-yard_algorithm#Java'
     private static String infixToPostfix(String infix, JLabel msg) {
         /* To find out the precedence, we take the index of the
-           token in the ops string and divide by 2 (rounding down).
+           token in the ops ArrayList and divide by 2 (rounding down).
            This will give us: 0, 0, 1, 1, 2 */
-        //final String ops = "-+/*^";
         final ArrayList<String> op = new ArrayList<String>();
         op.add("-");
         op.add("+");
@@ -595,22 +547,24 @@ public class TestCal extends JFrame{
         op.add("ln");
         op.add("log");
 
-        StringBuilder sb = new StringBuilder();
-        Stack<Integer> s = new Stack<>();
+        StringBuilder sb = new StringBuilder(); // Postfix String
+
+        Stack<Integer> s = new Stack<>(); // stack for index of operator
 
         try {
             for (String token : infix.split("\\s")) {
-                if (token.isEmpty())
+                if (token.isEmpty()) {
                     continue;
-                //String c = String.valueOf(token.charAt(0));
+                }
                 int idx = op.indexOf(token);
 
                 // check for operator
                 if (idx != -1) {
-                    if (s.isEmpty())
+                    if (s.isEmpty()) {
                         s.push(idx);
-
-                    else {
+                    } else {
+                        // check with the priority of operators
+                        // function > ^ > / = * > + = -
                         while (!s.isEmpty()) {
                             int prec2 = s.peek() / 2;
                             int prec1 = idx / 2;
@@ -641,73 +595,70 @@ public class TestCal extends JFrame{
                     }
                     s.pop();
                 } else {
+                    // append number to postfix
                     sb.append(token).append(' ');
                 }
             }
 
-
+            // if expression finished, pop all operators in stack to Postfix String
             while (!s.isEmpty()) {
                 sb.append(op.get(s.pop())).append(' ');
             }
+
             return sb.toString();
+
         } catch (Exception e) {
+            // catch all exception, and return wrong message
             System.out.println("Incorrect input");
             msg.setText("Your input is incorrect! ");
-            //System.exit(0);
             return "N/A";
         }
     }
 
+    // Part of code from 'https://rosettacode.org/wiki/Parsing/RPN_calculator_algorithm#Java_2'
     private static String evalRPN(String expr){
         LinkedList<Double> stack = new LinkedList<Double>();
-        //System.out.println("Input\tOperation\tStack after");
+
         try {
+            // if token is number, push into stack; if it is operator, do the calculation and push result into stack
             for (String token : expr.split("\\s")) {
-                //System.out.print(token + "\t");
+
                 if (token.equals("*")) {
-                    //System.out.print("Operate\t\t");
                     double secondOperand = stack.pop();
                     double firstOperand = stack.pop();
                     stack.push(firstOperand * secondOperand);
                 } else if (token.equals("/")) {
-                    //System.out.print("Operate\t\t");
                     double secondOperand = stack.pop();
-                    //check if it is divide by 0
+                    //check if it is divided by 0
                     if (secondOperand == 0.0) {
                         return "N/A";
                     }
                     double firstOperand = stack.pop();
                     stack.push(firstOperand / secondOperand);
                 } else if (token.equals("-")) {
-                    //System.out.print("Operate\t\t");
                     double secondOperand = stack.pop();
                     double firstOperand = stack.pop();
                     stack.push(firstOperand - secondOperand);
                 } else if (token.equals("+")) {
-                    //System.out.print("Operate\t\t");
                     double secondOperand = stack.pop();
                     double firstOperand = stack.pop();
                     stack.push(firstOperand + secondOperand);
                 } else if (token.equals("^")) {
-                    //System.out.print("Operate\t\t");
                     double secondOperand = stack.pop();
                     double firstOperand = stack.pop();
                     stack.push(Math.pow(firstOperand, secondOperand));
                 } else if (token.equals("sin")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
                     stack.push(Math.sin(Operand));
                 } else if (token.equals("cos")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
                     stack.push(Math.cos(Operand));
                 } else if (token.equals("tan")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
                     stack.push(Math.tan(Operand));
                 } else if (token.equals("cot")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
+                    // check if inside cot is 0
                     if (Operand == 0) {
                         System.out.println("Inside cot is 0");
                         return "N/A";
@@ -715,45 +666,43 @@ public class TestCal extends JFrame{
                     double temp = 1 / Math.tan(Operand);
                     stack.push(temp);
                 } else if (token.equals("ln")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
+                    // check if inside ln is <= 0
                     if (Operand <= 0) {
                         System.out.println("Inside ln function <= 0");
                         return "N/A";
                     }
                     stack.push(Math.log(Operand));
                 } else if (token.equals("log")) {
-                    //System.out.print("Operate\t\t");
                     double Operand = stack.pop();
+                    // check if inside log is <= 0
                     if (Operand <= 0) {
                         System.out.println("Inside log function <= 0");
                         return "N/A";
                     }
                     stack.push(Math.log10(Operand));
                 } else {
-                    //System.out.print("Push\t\t");
+                    // push number into stack
                     try {
                         stack.push(Double.parseDouble(token + ""));
                     } catch (NumberFormatException e) {
                         System.out.println("\nError: invalid token " + token);
-                        //System.exit(0);
                         return "N/A";
                     }
                 }
-                //System.out.println(stack);
-
             }
+
+            // if operands left in stack, return wrong message
             if (stack.size() > 1) {
                 System.out.println("Error, too many operands: " + stack);
-
-                //System.exit(0);
                 return "N/A";
             }
-            //System.out.println("Final answer: " + stack.pop());
+
+            // return final result
             return stack.pop().toString();
         } catch (Exception e) {
+            // catch all exception, and return wrong message
             System.out.println("Incorrect input! ");
-            //System.exit(0);
             return "N/A";
         }
     }
